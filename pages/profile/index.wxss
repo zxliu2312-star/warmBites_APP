@@ -1,0 +1,46 @@
+.page {
+  min-height: 100vh;
+  background: #f7f2ed;
+  padding: 32rpx;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  box-shadow: 0 12rpx 30rpx rgba(0, 0, 0, 0.06);
+}
+
+.hero {
+  background: linear-gradient(135deg, #ffe6cc, #fff5e9);
+  color: #3a2a1b;
+}
+
+.name {
+  font-size: 36rpx;
+  font-weight: 700;
+}
+
+.motto {
+  margin-top: 8rpx;
+  color: #704a2a;
+  font-size: 26rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #2f2f2f;
+}
+
+.section-content {
+  margin-top: 8rpx;
+  color: #6a6a6a;
+  font-size: 26rpx;
+  line-height: 1.6;
+}
+

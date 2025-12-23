@@ -1,0 +1,38 @@
+.page {
+  min-height: 100vh;
+  background: #f7f2ed;
+  padding: 32rpx;
+  box-sizing: border-box;
+}
+
+.header .title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #2f2f2f;
+}
+
+.header .subtitle {
+  margin-top: 8rpx;
+  color: #8c8c8c;
+  font-size: 26rpx;
+}
+
+.empty {
+  margin-top: 160rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 80rpx 40rpx;
+  text-align: center;
+  box-shadow: 0 12rpx 30rpx rgba(0, 0, 0, 0.06);
+}
+
+.icon {
+  font-size: 64rpx;
+  margin-bottom: 16rpx;
+}
+
+.text {
+  color: #6a6a6a;
+  font-size: 28rpx;
+}
+

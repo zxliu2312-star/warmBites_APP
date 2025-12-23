@@ -1,0 +1,109 @@
+<view class="page">
+  <!-- 顶部 -->
+  <view class="hero">
+    <view class="brand">
+      <view class="title">暖食记</view>
+      <view class="subtitle">在手机上找到今天的灵感</view>
+    </view>
+    <view class="search-bar">
+      <text class="icon">🔍</text>
+      <input class="search-input" placeholder="搜索菜名或口味" bindinput="onSearchInput" value="{{searchQuery}}" confirm-type="search" />
+    </view>
+  </view>
+
+  <!-- 分类 -->
+  <scroll-view class="cat-bar" scroll-x>
+    <view class="cat-row">
+      <view
+        wx:for="{{categories}}"
+        wx:key="*this"
+        class="cat-chip {{selectedCategory===item ? 'active' : ''}}"
+        data-cat="{{item}}"
+        bindtap="selectCategory"
+      >
+        {{item}}
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 菜谱列表 -->
+  <scroll-view class="list" scroll-y>
+    <view class="recipe-list">
+      <view
+        wx:for="{{filteredRecipes}}"
+        wx:key="id"
+        class="recipe-card"
+        data-id="{{item.id}}"
+        bindtap="openRecipe"
+      >
+        <image class="cover" src="{{item.image}}" mode="aspectFill" />
+        <view class="card-body">
+          <view class="card-title">{{item.title}}</view>
+          <view class="card-meta">
+            <text>{{item.time}}</text>
+            <text>❤️ {{item.likes}}</text>
+          </view>
+          <view class="tag-row">
+            <view class="tag" wx:for="{{item.tags}}" wx:key="*this">{{item}}</view>
+          </view>
+          <view class="desc">{{item.description}}</view>
+        </view>
+      </view>
+
+      <view wx:if="{{filteredRecipes.length===0}}" class="empty">
+        暂无匹配菜谱，换个关键词试试～
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 弹层：菜谱详情与流水线步骤 -->
+  <view wx:if="{{showModal}}" class="modal">
+    <view class="mask" catchtouchmove="noop" bindtap="closeModal"></view>
+    <view
+      class="modal-panel"
+      catchtouchmove="noop"
+      bindtouchstart="onModalTouchStart"
+      bindtouchend="onModalTouchEnd"
+    >
+      <view class="pull-hint"></view>
+      <view class="modal-header">
+        <view>
+          <view class="modal-title">{{activeRecipe.title}}</view>
+          <view class="modal-meta">{{activeRecipe.time}} · ❤️ {{activeRecipe.likes}}</view>
+        </view>
+        <button class="cook-btn" size="mini" bindtap="startCook">开做！</button>
+      </view>
+
+      <scroll-view class="modal-scroll" scroll-y>
+        <view class="section">
+          <view class="section-title">用料</view>
+          <view class="pill-row">
+            <view class="pill" wx:for="{{activeRecipe.ingredients}}" wx:key="*this">{{item}}</view>
+          </view>
+        </view>
+
+        <view class="section">
+          <view class="section-title">烹饪步骤（{{activeStepIndex + 1}} / {{activeRecipe.steps.length}}）</view>
+          <swiper
+            class="step-swiper"
+            current="{{activeStepIndex}}"
+            bindchange="onStepChange"
+            previous-margin="32rpx"
+            next-margin="32rpx"
+          >
+            <swiper-item wx:for="{{activeRecipe.steps}}" wx:key="index">
+              <view class="step-card">
+                <view class="step-index">步骤 {{index + 1}}</view>
+                <view class="step-text">{{item}}</view>
+              </view>
+            </swiper-item>
+          </swiper>
+          <view class="step-actions">
+            <button class="ghost" size="mini" bindtap="goPrevStep" disabled="{{activeStepIndex===0}}">上一步</button>
+            <button class="primary" size="mini" bindtap="goNextStep" disabled="{{activeRecipe.steps.length-1===activeStepIndex}}">下一步</button>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>
