@@ -4,8 +4,10 @@ const { CATEGORIES, RECIPES } = require('../../data/recipes');
 Page({
   data: {
     categories: CATEGORIES,
-    recipes: RECIPES,
-    filteredRecipes: RECIPES,
+    recipes: [],
+    filteredRecipes: [],
+    leftColumnRecipes: [],
+    rightColumnRecipes: [],
     selectedCategory: '全部',
     searchQuery: '',
     showModal: false,
@@ -15,7 +17,32 @@ Page({
   },
 
   onLoad() {
-    this.filterRecipes();
+    // 初始化时给每个菜卡片一个随机但合理的高度，用于瀑布流效果（分段错落）
+    const recipesWithHeight = RECIPES.map((r, index) => {
+      const bucket = index % 3; // 0: 短, 1: 中, 2: 稍长
+      let baseMin = 240;
+      let baseMax = 420;
+      if (bucket === 0) {
+        baseMax = 300;
+      } else if (bucket === 1) {
+        baseMin = 280;
+        baseMax = 360;
+      } else {
+        baseMin = 320;
+      }
+      const cardHeight =
+        baseMin + Math.floor(Math.random() * (baseMax - baseMin + 1));
+      return {
+        ...r,
+        cardHeight
+      };
+    });
+    this.setData(
+      {
+        recipes: recipesWithHeight
+      },
+      () => this.filterRecipes()
+    );
   },
 
   onSearchInput(e) {
@@ -43,7 +70,33 @@ Page({
       return matchCategory && matchSearch;
     });
 
-    this.setData({ filteredRecipes: filtered });
+    const { left, right } = this.distributeToColumns(filtered);
+
+    this.setData({
+      filteredRecipes: filtered,
+      leftColumnRecipes: left,
+      rightColumnRecipes: right
+    });
+  },
+
+  distributeToColumns(list) {
+    const left = [];
+    const right = [];
+    let leftHeight = 0;
+    let rightHeight = 0;
+
+    list.forEach((item) => {
+      const h = item.cardHeight || 320;
+      if (leftHeight <= rightHeight) {
+        left.push(item);
+        leftHeight += h;
+      } else {
+        right.push(item);
+        rightHeight += h;
+      }
+    });
+
+    return { left, right };
   },
 
   openRecipe(e) {

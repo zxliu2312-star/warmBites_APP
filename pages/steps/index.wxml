@@ -12,7 +12,7 @@
     current="{{current}}"
     bindchange="onChange"
   >
-    <swiper-item wx:for="{{recipe.steps}}" wx:key="index">
+    <swiper-item wx:for="{{recipe.steps}}" wx:key="index" class="step-item">
       <view class="step-card">
         <image class="step-media" mode="aspectFill" src="{{recipe.image}}" />
         <view class="step-body">

@@ -28,31 +28,66 @@
 
   <!-- 菜谱列表 -->
   <scroll-view class="list" scroll-y>
-    <view class="recipe-list">
-      <view
-        wx:for="{{filteredRecipes}}"
-        wx:key="id"
-        class="recipe-card"
-        data-id="{{item.id}}"
-        bindtap="openRecipe"
-      >
-        <image class="cover" src="{{item.image}}" mode="aspectFill" />
-        <view class="card-body">
-          <view class="card-title">{{item.title}}</view>
-          <view class="card-meta">
-            <text>{{item.time}}</text>
-            <text>❤️ {{item.likes}}</text>
+    <view class="waterfall">
+      <view class="column">
+        <view
+          wx:for="{{leftColumnRecipes}}"
+          wx:key="id"
+          class="recipe-card"
+          data-id="{{item.id}}"
+          bindtap="openRecipe"
+        >
+          <image
+            class="cover"
+            src="{{item.image}}"
+            mode="aspectFill"
+            style="height: {{item.cardHeight}}rpx;"
+          />
+          <view class="card-body">
+            <view class="card-title">{{item.title}}</view>
+            <view class="card-meta">
+              <text>{{item.time}}</text>
+              <text>❤️ {{item.likes}}</text>
+            </view>
+            <view class="tag-row">
+              <view class="tag" wx:for="{{item.tags}}" wx:key="*this">{{item}}</view>
+            </view>
+            <view class="desc">{{item.description}}</view>
           </view>
-          <view class="tag-row">
-            <view class="tag" wx:for="{{item.tags}}" wx:key="*this">{{item}}</view>
-          </view>
-          <view class="desc">{{item.description}}</view>
         </view>
       </view>
 
-      <view wx:if="{{filteredRecipes.length===0}}" class="empty">
-        暂无匹配菜谱，换个关键词试试～
+      <view class="column">
+        <view
+          wx:for="{{rightColumnRecipes}}"
+          wx:key="id"
+          class="recipe-card"
+          data-id="{{item.id}}"
+          bindtap="openRecipe"
+        >
+          <image
+            class="cover"
+            src="{{item.image}}"
+            mode="aspectFill"
+            style="height: {{item.cardHeight}}rpx;"
+          />
+          <view class="card-body">
+            <view class="card-title">{{item.title}}</view>
+            <view class="card-meta">
+              <text>{{item.time}}</text>
+              <text>❤️ {{item.likes}}</text>
+            </view>
+            <view class="tag-row">
+              <view class="tag" wx:for="{{item.tags}}" wx:key="*this">{{item}}</view>
+            </view>
+            <view class="desc">{{item.description}}</view>
+          </view>
+        </view>
       </view>
+    </view>
+
+    <view wx:if="{{filteredRecipes.length===0}}" class="empty">
+      暂无匹配菜谱，换个关键词试试～
     </view>
   </scroll-view>
 

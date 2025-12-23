@@ -1,7 +1,10 @@
 .page {
   min-height: 100vh;
-  background: #f7f2ed;
-  padding: 24rpx;
+  background:
+    radial-gradient(circle at 0 0, rgba(255, 216, 164, 0.45), transparent 60%),
+    radial-gradient(circle at 100% 100%, rgba(255, 186, 140, 0.4), transparent 55%),
+    #f7f2ed;
+  padding: 32rpx 24rpx 24rpx;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -9,7 +12,7 @@
 }
 
 .header .title {
-  font-size: 34rpx;
+  font-size: 40rpx;
   font-weight: 700;
   color: #2f2f2f;
 }
@@ -17,22 +20,26 @@
 .header .meta {
   margin-top: 6rpx;
   color: #8c8c8c;
-  font-size: 24rpx;
+  font-size: 26rpx;
 }
 
 .step-swiper {
-  flex: 1;
-  min-height: 600rpx;
+  height: 70vh;
+}
+
+.step-item {
+  height: 100%;
 }
 
 .step-card {
   background: #ffffff;
   border-radius: 20rpx;
   overflow: hidden;
-  box-shadow: 0 12rpx 30rpx rgba(0, 0, 0, 0.06);
+  box-shadow: 0 16rpx 40rpx rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
   height: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .step-media {
@@ -50,22 +57,23 @@
 .step-index {
   font-weight: 700;
   color: #d35400;
-  font-size: 28rpx;
+  font-size: 30rpx;
 }
 
 .step-text {
   color: #444;
-  font-size: 26rpx;
+  font-size: 30rpx;
   line-height: 1.6;
 }
 
 .tips {
   margin-top: 4rpx;
-  padding: 14rpx;
+  padding: 18rpx;
   background: #fff5eb;
   border-radius: 14rpx;
   color: #6a4a2f;
-  font-size: 24rpx;
+  font-size: 26rpx;
+  transition: transform 0.15s ease;
 }
 
 .tips-label {
@@ -79,26 +87,49 @@
 
 .actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   gap: 12rpx;
-  margin-bottom: 12rpx;
+  margin: 12rpx 4rpx 4rpx;
 }
 
 .ghost {
-  background: #f6f1eb;
-  color: #6a5039;
+  min-width: 180rpx;
+  padding: 16rpx 24rpx;
+  background: transparent;
+  color: #d07a3a;
   border-radius: 999rpx;
+  border: 2rpx solid rgba(208, 122, 58, 0.45);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .primary {
+  flex: 1;
+  padding: 16rpx 24rpx;
   background: linear-gradient(135deg, #ffb872, #ff8f4c);
   color: #fff;
   border-radius: 999rpx;
+  box-shadow: 0 14rpx 28rpx rgba(255, 143, 76, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .empty {
   padding: 80rpx 32rpx;
   text-align: center;
   color: #8c8c8c;
+}
+
+.step-card:hover {
+  transform: translateY(-4rpx);
+  box-shadow: 0 16rpx 34rpx rgba(0, 0, 0, 0.08);
+}
+
+.ghost:active,
+.primary:active {
+  transform: scale(0.97);
+  box-shadow: 0 8rpx 18rpx rgba(0, 0, 0, 0.08);
+}
+
+.tips:active {
+  transform: scale(0.99);
 }
 
