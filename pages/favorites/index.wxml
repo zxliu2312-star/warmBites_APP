@@ -4,9 +4,35 @@
     <view class="subtitle">把喜欢的菜留在这里，随时复做</view>
   </view>
 
-  <view class="empty">
+  <view wx:if="{{favorites.length===0}}" class="empty">
     <view class="icon">🤲</view>
     <view class="text">还没有收藏，去主页挑一道吧</view>
+  </view>
+
+  <view wx:else class="fav-list">
+    <view
+      class="fav-item"
+      wx:for="{{favorites}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="openRecipe"
+    >
+      <image class="fav-cover" src="{{item.image}}" mode="aspectFill" />
+      <view class="fav-body">
+        <view class="fav-title">{{item.title}}</view>
+        <view class="fav-meta">{{item.time}} · ❤️ {{item.likes}}</view>
+        <view class="fav-tags">
+          <text class="fav-tag" wx:for="{{item.tags}}" wx:key="*this">{{item}}</text>
+        </view>
+      </view>
+      <view
+        class="fav-remove"
+        data-id="{{item.id}}"
+        catchtap="removeFavorite"
+      >
+        取消
+      </view>
+    </view>
   </view>
 </view>
 

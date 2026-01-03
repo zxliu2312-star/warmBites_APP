@@ -21,6 +21,19 @@
           <view class="tips">
             <text class="tips-label">小提示</text>
             <text class="tips-text">保持火候稳定，注意食材熟度与口感。</text>
+
+            <view wx:if="{{aiTips[index]}}" class="ai-tip">
+              <text class="ai-tip-label">AI 建议：</text>
+              <text class="ai-tip-text">{{aiTips[index]}}</text>
+            </view>
+
+            <view
+              class="ai-entry"
+              data-step-index="{{index}}"
+              bindtap="openAi"
+            >
+              遇到困难了？点我试一试
+            </view>
           </view>
         </view>
       </view>
@@ -30,6 +43,40 @@
   <view class="actions">
     <button class="ghost" size="mini" bindtap="goPrev" disabled="{{current===0}}">上一步</button>
     <button class="primary" size="mini" bindtap="goNext" disabled="{{current===recipe.steps.length-1}}">下一步</button>
+  </view>
+</view>
+
+<!-- AI 弹窗：本页内交互，关闭后把答案写回对应步骤的小提示下面 -->
+<view wx:if="{{showAi}}" class="ai-modal">
+  <view class="ai-mask" catchtouchmove="noop" bindtap="closeAi"></view>
+  <view class="ai-panel" catchtouchmove="noop">
+    <view class="ai-header">
+      <view class="ai-title">AI 厨房小助手</view>
+      <view class="ai-sub">针对当前步骤提问，更快解决卡点</view>
+    </view>
+
+    <scroll-view class="ai-chat" scroll-y>
+      <view wx:for="{{aiMessages}}" wx:key="idx" class="ai-msg {{item.role}}">
+        <view class="ai-bubble">{{item.content}}</view>
+      </view>
+    </scroll-view>
+
+    <view class="ai-input-row">
+      <input
+        class="ai-input"
+        placeholder="例如：怎么判断熟了？可以换成什么食材？"
+        value="{{aiInput}}"
+        bindinput="onAiInput"
+        confirm-type="send"
+        bindconfirm="sendAi"
+      />
+      <button class="ai-send" size="mini" bindtap="sendAi" disabled="{{aiSending}}">发送</button>
+    </view>
+
+    <view class="ai-footer">
+      <button class="ai-close" size="mini" bindtap="closeAi">收起</button>
+      <view wx:if="{{aiSending}}" class="ai-loading">思考中…</view>
+    </view>
   </view>
 </view>
 

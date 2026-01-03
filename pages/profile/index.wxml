@@ -1,12 +1,57 @@
 <view class="page">
+  <!-- 用户信息卡片 -->
   <view class="card hero">
-    <view class="name">{{user.name}}</view>
-    <view class="motto">{{user.motto}}</view>
+    <view class="user-row">
+      <image class="avatar" src="{{user.avatar}}" mode="aspectFill" />
+      <view class="user-main">
+        <view class="name">{{user.name}}</view>
+        <view class="meta">
+          <text class="meta-item">ID：{{user.id}}</text>
+        </view>
+        <view class="motto">{{user.motto}}</view>
+      </view>
+    </view>
+
+    <view class="stats-row">
+      <view class="stat">
+        <view class="stat-num">{{user.stats.favorites}}</view>
+        <view class="stat-label">收藏</view>
+      </view>
+      <view class="stat">
+        <view class="stat-num">{{user.stats.likes}}</view>
+        <view class="stat-label">喜欢</view>
+      </view>
+      <view class="stat">
+        <view class="stat-num">{{user.stats.cooks}}</view>
+        <view class="stat-label">开做</view>
+      </view>
+    </view>
   </view>
 
+  <!-- 功能入口（占位，可后续接入） -->
+  <view class="card">
+    <view class="section-title">我的功能</view>
+
+    <view class="item" bindtap="goFavorites">
+      <view class="item-left">
+        <text class="item-icon">★</text>
+        <text class="item-title">我的收藏</text>
+      </view>
+      <text class="item-arrow">›</text>
+    </view>
+
+    <view class="item" bindtap="copyUserId">
+      <view class="item-left">
+        <text class="item-icon">⧉</text>
+        <text class="item-title">复制用户ID</text>
+      </view>
+      <text class="item-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 原有介绍信息保留 -->
   <view class="card" wx:for="{{sections}}" wx:key="title">
     <view class="section-title">{{item.title}}</view>
     <view class="section-content">{{item.content}}</view>
   </view>
 </view>
-
