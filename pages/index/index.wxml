@@ -6,7 +6,7 @@
       <view class="subtitle">在手机上找到今天的灵感</view>
     </view>
     <view class="search-bar">
-      <icon class="icon-box-img" type="search" size="14"></icon>
+      <text class="icon">🔍</text>
       <input class="search-input" placeholder="搜索菜名或口味" bindinput="onSearchInput" value="{{searchQuery}}" confirm-type="search" />
     </view>
   </view>
@@ -47,25 +47,12 @@
             <view class="card-title">{{item.title}}</view>
             <view class="card-meta">
               <text>{{item.time}}</text>
-              <view class="meta-actions">
-                <view class="actions">
-                  <view class="action like {{item.isLiked ? 'active' : ''}} {{likeAnimId===item.id ? 'anim' : ''}}" data-id="{{item.id}}" catchtap="toggleLike">
-                    <image wx:if="{{item.isLiked}}" class="action-icon" src="/data/components/like.png" mode="aspectFit" />
-                    <image wx:else class="action-icon" src="/data/components/preLike.png" mode="aspectFit" />
-                    <text class="action-count">{{item.likeCount}}</text>
-                  </view>
-                  <view class="action collect {{item.isFav ? 'active' : ''}}" data-id="{{item.id}}" catchtap="toggleFavorite">
-                    <image wx:if="{{item.isFav}}" class="action-icon" src="/data/components/collect.png" mode="aspectFit" />
-                    <image wx:else class="action-icon" src="/data/components/preCollect.png" mode="aspectFit" />
-                    <text class="action-count">{{item.favoriteCount}}</text>
-                  </view>
-                </view>
-              </view>
+              <text>❤️ {{item.likes}}</text>
             </view>
             <view class="tag-row">
               <view class="tag" wx:for="{{item.tags}}" wx:key="*this">{{item}}</view>
             </view>
-
+            <view class="desc">{{item.description}}</view>
           </view>
         </view>
       </view>
@@ -88,24 +75,12 @@
             <view class="card-title">{{item.title}}</view>
             <view class="card-meta">
               <text>{{item.time}}</text>
-              <view class="meta-actions">
-                <view class="actions">
-                  <view class="action like {{item.isLiked ? 'active' : ''}} {{likeAnimId===item.id ? 'anim' : ''}}" data-id="{{item.id}}" catchtap="toggleLike">
-                    <image wx:if="{{item.isLiked}}" class="action-icon" src="/data/components/like.png" mode="aspectFit" />
-                    <image wx:else class="action-icon" src="/data/components/preLike.png" mode="aspectFit" />
-                    <text class="action-count">{{item.likeCount}}</text>
-                  </view>
-                  <view class="action collect {{item.isFav ? 'active' : ''}}" data-id="{{item.id}}" catchtap="toggleFavorite">
-                    <image class="action-icon" src="/data/components/collect.png" mode="aspectFit" />
-                    <text class="action-count">{{item.favoriteCount}}</text>
-                  </view>
-                </view>
-              </view>
+              <text>❤️ {{item.likes}}</text>
             </view>
             <view class="tag-row">
               <view class="tag" wx:for="{{item.tags}}" wx:key="*this">{{item}}</view>
             </view>
-
+            <view class="desc">{{item.description}}</view>
           </view>
         </view>
       </view>
@@ -127,17 +102,11 @@
     >
       <view class="pull-hint"></view>
       <view class="modal-header">
-        <view class="modal-row">
+        <view>
           <view class="modal-title">{{activeRecipe.title}}</view>
-          <view class="modal-row-right">
-            <view class="modal-counts">
-              <text class="count like">❤ {{activeRecipe.likes}}</text>
-              <text class="count fav">★ {{activeRecipe.favoriteCount}}</text>
-            </view>
-            <button class="cook-btn" size="mini" bindtap="startCook">开做！</button>
-          </view>
+          <view class="modal-meta">{{activeRecipe.time}} · ❤️ {{activeRecipe.likes}}</view>
         </view>
-        <view class="modal-desc">{{activeRecipe.description}}</view>
+        <button class="cook-btn" size="mini" bindtap="startCook">开做！</button>
       </view>
 
       <scroll-view class="modal-scroll" scroll-y>
@@ -164,7 +133,10 @@
               </view>
             </swiper-item>
           </swiper>
-
+          <view class="step-actions">
+            <button class="ghost" size="mini" bindtap="goPrevStep" disabled="{{activeStepIndex===0}}">上一步</button>
+            <button class="primary" size="mini" bindtap="goNextStep" disabled="{{activeRecipe.steps.length-1===activeStepIndex}}">下一步</button>
+          </view>
         </view>
       </scroll-view>
     </view>

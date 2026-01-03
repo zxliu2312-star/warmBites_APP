@@ -150,75 +150,6 @@ page {
   font-size: 24rpx;
 }
 
-.meta-actions {
-  display: flex;
-  align-items: center;
-  gap: 12rpx;
-}
-
-/* 右侧：点赞/收藏（图标在左，数字在右） */
-.actions {
-  display: flex;
-  align-items: center;
-  gap: 14rpx;
-}
-
-.action {
-  display: inline-flex;
-  align-items: center;
-  gap: 6rpx;
-  padding: 6rpx 8rpx;
-  border-radius: 999rpx;
-}
-
-.action:active {
-  transform: scale(0.96);
-}
-
-.action-icon {
-  width: 30rpx;
-  height: 30rpx;
-}
-
-.action-count {
-  font-size: 22rpx;
-  color: #2f2f2f;
-  line-height: 1;
-}
-
-/* 点赞动画：用额外的 anim class 触发，保证每次点击都能重复播放 */
-.action.like.anim {
-  animation: like-pop 260ms ease-out;
-}
-
-@keyframes like-pop {
-  0% {
-    transform: scale(0.85);
-  }
-  55% {
-    transform: scale(1.18);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-.action.collect.active {
-  animation: star-pop 260ms ease-out;
-}
-
-@keyframes star-pop {
-  0% {
-    transform: scale(0.85);
-  }
-  55% {
-    transform: scale(1.18);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
 .tag-row {
   display: flex;
   gap: 10rpx;
@@ -290,55 +221,23 @@ page {
 
 .modal-header {
   display: flex;
-  flex-direction: column;
-  margin-bottom: 12rpx;
-  gap: 10rpx;
-}
-
-.modal-row {
-  display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 12rpx;
   gap: 12rpx;
+  position: relative;
+  padding-right: 0rpx;
 }
 
 .modal-title {
-  flex: 1;
-  min-width: 0;
   font-size: 34rpx;
   font-weight: 700;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
-.modal-row-right {
-  display: flex;
-  align-items: center;
-  gap: 14rpx;
-  flex: 0 0 auto;
-}
-
-.modal-desc {
-  color: #6a6a6a;
-  font-size: 26rpx;
-  line-height: 1.5;
-}
-
-.modal-counts {
-  display: flex;
-  align-items: center;
-  gap: 12rpx;
-  color: #2f2f2f;
+.modal-meta {
   font-size: 24rpx;
-}
-
-.modal-counts .count.like {
-  color: #e74c3c;
-}
-
-.modal-counts .count.fav {
-  color: #f6c343;
+  color: #8c8c8c;
+  margin-top: 4rpx;
 }
 
 .cook-btn {
@@ -348,7 +247,9 @@ page {
   background: linear-gradient(135deg, #ffb872, #ff8f4c);
   color: #fff;
   font-weight: 700;
-  position: static;
+  position: absolute;
+  right: 0;
+  top: 0;
   box-shadow: 0 10rpx 20rpx rgba(255, 143, 76, 0.25);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
