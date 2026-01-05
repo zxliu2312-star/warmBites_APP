@@ -1,13 +1,31 @@
 <view class="page">
   <!-- 顶部 -->
-  <view class="hero">
-    <view class="brand">
-      <view class="title">暖食记</view>
-      <view class="subtitle">在手机上找到今天的灵感</view>
+  <view class="hero-container">
+    <view class="hero {{heroHeight <= 160 ? 'collapsed' : 'expanded'}}" style="height: {{heroHeight}}rpx;">
+      <image class="hero-bg" src="/data/background.jpg" mode="aspectFill" />
+      <view class="hero-content">
+        <view class="brand">
+          <view class="title">暖食记</view>
+          <view class="welcome-text">欢迎回来，大厨 臣巳</view>
+          <view class="collapsed-text">来选选今天吃什么吧</view>
+        </view>
+        <view class="hero-middle">
+          <view class="day-counter">一起吃饭的第{{dayCount}}天</view>
+        </view>
+      </view>
+      <!-- 展开/收起箭头 -->
+      <view class="toggle-arrow" bindtap="toggleHero">
+        <text wx:if="{{heroHeight > 160}}" class="arrow-icon">▲</text>
+        <text wx:else class="arrow-icon">▼</text>
+      </view>
     </view>
-    <view class="search-bar">
-      <text class="icon">🔍</text>
-      <input class="search-input" placeholder="搜索菜名或口味" bindinput="onSearchInput" value="{{searchQuery}}" confirm-type="search" />
+    
+    <!-- 搜索栏：跟随标签栏上移 -->
+    <view class="search-wrapper {{heroHeight <= 160 ? 'collapsed' : 'expanded'}}">
+      <view class="search-bar">
+        <icon class="icon-box-img" type="search" size="14"></icon>
+        <input class="search-input" placeholder="搜索菜名或口味" bindinput="onSearchInput" value="{{searchQuery}}" confirm-type="search" />
+      </view>
     </view>
   </view>
 
@@ -47,12 +65,25 @@
             <view class="card-title">{{item.title}}</view>
             <view class="card-meta">
               <text>{{item.time}}</text>
-              <text>❤️ {{item.likes}}</text>
+              <view class="meta-actions">
+                <view class="actions">
+                  <view class="action like {{item.isLiked ? 'active' : ''}} {{likeAnimId===item.id ? 'anim' : ''}}" data-id="{{item.id}}" catchtap="toggleLike">
+                    <image wx:if="{{item.isLiked}}" class="action-icon" src="/data/components/like.png" mode="aspectFit" />
+                    <image wx:else class="action-icon" src="/data/components/preLike.png" mode="aspectFit" />
+                    <text class="action-count">{{item.likeCount}}</text>
+                  </view>
+                  <view class="action collect {{item.isFav ? 'active' : ''}} {{favAnimId===item.id ? 'anim' : ''}}" data-id="{{item.id}}" catchtap="toggleFavorite">
+                    <image wx:if="{{item.isFav}}" class="action-icon" src="/data/components/collect.png" mode="aspectFit" />
+                    <image wx:else class="action-icon" src="/data/components/preCollect.png" mode="aspectFit" />
+                    <text class="action-count">{{item.favoriteCount}}</text>
+                  </view>
+                </view>
+              </view>
             </view>
             <view class="tag-row">
               <view class="tag" wx:for="{{item.tags}}" wx:key="*this">{{item}}</view>
             </view>
-            <view class="desc">{{item.description}}</view>
+
           </view>
         </view>
       </view>
@@ -75,12 +106,25 @@
             <view class="card-title">{{item.title}}</view>
             <view class="card-meta">
               <text>{{item.time}}</text>
-              <text>❤️ {{item.likes}}</text>
+              <view class="meta-actions">
+                <view class="actions">
+                  <view class="action like {{item.isLiked ? 'active' : ''}} {{likeAnimId===item.id ? 'anim' : ''}}" data-id="{{item.id}}" catchtap="toggleLike">
+                    <image wx:if="{{item.isLiked}}" class="action-icon" src="/data/components/like.png" mode="aspectFit" />
+                    <image wx:else class="action-icon" src="/data/components/preLike.png" mode="aspectFit" />
+                    <text class="action-count">{{item.likeCount}}</text>
+                  </view>
+                  <view class="action collect {{item.isFav ? 'active' : ''}} {{favAnimId===item.id ? 'anim' : ''}}" data-id="{{item.id}}" catchtap="toggleFavorite">
+                    <image wx:if="{{item.isFav}}" class="action-icon" src="/data/components/collect.png" mode="aspectFit" />
+                    <image wx:else class="action-icon" src="/data/components/preCollect.png" mode="aspectFit" />
+                    <text class="action-count">{{item.favoriteCount}}</text>
+                  </view>
+                </view>
+              </view>
             </view>
             <view class="tag-row">
               <view class="tag" wx:for="{{item.tags}}" wx:key="*this">{{item}}</view>
             </view>
-            <view class="desc">{{item.description}}</view>
+
           </view>
         </view>
       </view>
@@ -102,11 +146,17 @@
     >
       <view class="pull-hint"></view>
       <view class="modal-header">
-        <view>
+        <view class="modal-row">
           <view class="modal-title">{{activeRecipe.title}}</view>
-          <view class="modal-meta">{{activeRecipe.time}} · ❤️ {{activeRecipe.likes}}</view>
+          <view class="modal-row-right">
+            <view class="modal-counts">
+              <text class="count like">❤ {{activeRecipe.likes}}</text>
+              <text class="count fav">★ {{activeRecipe.favoriteCount}}</text>
+            </view>
+            <button class="cook-btn" size="mini" bindtap="startCook">开做！</button>
+          </view>
         </view>
-        <button class="cook-btn" size="mini" bindtap="startCook">开做！</button>
+        <view class="modal-desc">{{activeRecipe.description}}</view>
       </view>
 
       <scroll-view class="modal-scroll" scroll-y>
@@ -133,10 +183,7 @@
               </view>
             </swiper-item>
           </swiper>
-          <view class="step-actions">
-            <button class="ghost" size="mini" bindtap="goPrevStep" disabled="{{activeStepIndex===0}}">上一步</button>
-            <button class="primary" size="mini" bindtap="goNextStep" disabled="{{activeRecipe.steps.length-1===activeStepIndex}}">下一步</button>
-          </view>
+
         </view>
       </scroll-view>
     </view>

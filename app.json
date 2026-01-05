@@ -19,15 +19,21 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "主页"
+        "text": "主页",
+        "iconPath": "data/components/page/prehHomePage.png",
+        "selectedIconPath": "data/components/page/homePage.png"
       },
       {
         "pagePath": "pages/favorites/index",
-        "text": "收藏"
+        "text": "收藏",
+        "iconPath": "data/components/page/preCollectPage.png",
+        "selectedIconPath": "data/components/page/collectPage.png"
       },
       {
         "pagePath": "pages/profile/index",
-        "text": "我的"
+        "text": "我的",
+        "iconPath": "data/components/page/preUserPage.png",
+        "selectedIconPath": "data/components/page/userPage.png"
       }
     ]
   },

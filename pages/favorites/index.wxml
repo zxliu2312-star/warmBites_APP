@@ -1,12 +1,120 @@
 <view class="page">
-  <view class="header">
-    <view class="title">我的收藏</view>
-    <view class="subtitle">把喜欢的菜留在这里，随时复做</view>
+  <view class="page-bg-wrapper">
+    <image class="page-bg" src="/data/background.jpg" mode="widthFix" wx:for="{{[1,2,3,4,5]}}" wx:key="index" style="display: block;" />
+  </view>
+  <view class="page-content">
+    <view class="header">
+    <view class="header-left">
+      <view class="title">臣巳的小厨房</view>
+      <view class="subtitle">把喜欢的菜留在这里，随时复做</view>
+    </view>
+    <view class="header-right">
+      <view class="filter-btn" bindtap="openFilter">
+        <text class="filter-icon">筛选</text>
+        <view wx:if="{{selectedIngredients.length > 0}}" class="filter-badge">{{selectedIngredients.length}}</view>
+      </view>
+      <image 
+        class="delete-icon-header" 
+        src="{{isDeleteMode ? '/data/components/delete.png' : '/data/components/preDelete.png'}}"
+        bindtap="toggleDeleteMode"
+        mode="aspectFit"
+      />
+    </view>
   </view>
 
-  <view class="empty">
+  <view wx:if="{{favorites.length===0}}" class="empty">
     <view class="icon">🤲</view>
     <view class="text">还没有收藏，去主页挑一道吧</view>
+  </view>
+
+  <view wx:else class="fav-list">
+    <view
+      class="fav-item"
+      wx:for="{{favorites}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="openRecipe"
+    >
+      <image class="fav-cover" src="{{item.image}}" mode="aspectFill" />
+      <view wx:if="{{isDeleteMode}}" class="delete-mark" data-id="{{item.id}}" catchtap="removeFavorite">✕</view>
+      <view class="fav-body">
+        <view class="fav-title">{{item.title}}</view>
+        <view class="fav-ingredients">
+          <text class="ingredient-label">需要准备：</text>
+          <view class="ingredient-list">
+            <text class="ingredient-item" wx:for="{{item.ingredients}}" wx:key="*this" wx:for-item="ing">{{ing}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  </view>
+</view>
+
+<!-- 筛选弹窗 -->
+<view wx:if="{{showFilter}}" class="filter-modal">
+  <view class="filter-mask" catchtouchmove="noop" bindtap="closeFilter"></view>
+  <view class="filter-panel" catchtouchmove="noop">
+    <view class="filter-header">
+      <view class="filter-title">筛选食材</view>
+      <view class="filter-close" bindtap="closeFilter">✕</view>
+    </view>
+    
+    <scroll-view class="filter-content" scroll-y>
+      <!-- 已选栏：选中的食材会显示在这里，点击可取消 -->
+      <view class="selected-bar" wx:if="{{selectedIngredients.length > 0}}">
+        <view class="selected-bar-title">已选</view>
+        <scroll-view class="selected-bar-list" scroll-x>
+          <view
+            class="selected-pill"
+            wx:for="{{selectedIngredients}}"
+            wx:key="*this"
+            data-ingredient="{{item}}"
+            bindtap="toggleIngredientByName"
+          >
+            {{item}}
+            <text class="selected-pill-x">×</text>
+          </view>
+        </scroll-view>
+      </view>
+
+      <view class="filter-categories">
+        <view 
+          wx:for="{{filterCategories}}" 
+          wx:key="name" 
+          wx:for-item="category"
+          class="filter-category"
+        >
+          <view 
+            class="category-header"
+            data-index="{{index}}"
+            bindtap="toggleCategory"
+          >
+            <text class="category-name">{{category.name}}</text>
+            <text class="category-arrow">{{category.active ? '▼' : '▶'}}</text>
+          </view>
+          
+          <view wx:if="{{category.active}}" class="category-items">
+            <view
+              wx:for="{{category.items}}"
+              wx:key="*this"
+              wx:for-item="ingredient"
+              class="filter-ingredient-item"
+              aria-selected="{{selectedIngredients.indexOf(ingredient) > -1}}"
+              data-ingredient="{{ingredient}}"
+              bindtap="toggleIngredientByName"
+            >
+              {{ingredient}}
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <view class="filter-footer">
+      <button class="filter-clear" bindtap="clearFilter">清除</button>
+      <button class="filter-confirm" bindtap="confirmFilter">确定</button>
+    </view>
   </view>
 </view>
 

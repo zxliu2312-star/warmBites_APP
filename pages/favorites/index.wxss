@@ -1,8 +1,47 @@
 .page {
   min-height: 100vh;
-  background: #f7f2ed;
+  position: relative;
+  background-color: #f7f2ed;
+}
+
+.page-bg-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.page-bg {
+  width: 100%;
+  display: block;
+}
+
+.page-content {
+  position: relative;
+  z-index: 1;
   padding: 32rpx;
   box-sizing: border-box;
+  min-height: 100vh;
+}
+
+.page-content {
+  position: relative;
+  z-index: 1;
+  padding: 32rpx;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.header-left {
+  flex: 1;
 }
 
 .header .title {
@@ -15,6 +54,47 @@
   margin-top: 8rpx;
   color: #8c8c8c;
   font-size: 26rpx;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  justify-content: flex-end;
+}
+
+.filter-btn {
+  position: relative;
+  padding: 12rpx 20rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  font-size: 26rpx;
+  color: #d35400;
+  border: 2rpx solid rgba(211, 84, 0, 0.3);
+  flex-shrink: 0;
+}
+
+.filter-badge {
+  position: absolute;
+  top: -8rpx;
+  right: -8rpx;
+  min-width: 32rpx;
+  height: 32rpx;
+  background: #ff4444;
+  color: #fff;
+  border-radius: 16rpx;
+  font-size: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8rpx;
+  box-sizing: border-box;
+}
+
+.delete-icon-header {
+  width: 44rpx;
+  height: 44rpx;
+  flex-shrink: 0;
 }
 
 .empty {
@@ -34,5 +114,291 @@
 .text {
   color: #6a6a6a;
   font-size: 28rpx;
+}
+
+.fav-list {
+  margin-top: 24rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.fav-item {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 16rpx;
+  box-shadow: 0 12rpx 30rpx rgba(0, 0, 0, 0.06);
+  position: relative;
+}
+
+.delete-mark {
+  position: absolute;
+  top: 8rpx;
+  right: 8rpx;
+  width: 40rpx;
+  height: 40rpx;
+  background: #ff4444;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 24rpx;
+  font-weight: bold;
+  z-index: 10;
+  box-shadow: 0 2rpx 8rpx rgba(255, 68, 68, 0.3);
+}
+
+.fav-cover {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 16rpx;
+  flex: 0 0 auto;
+}
+
+.fav-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+  min-width: 0;
+}
+
+.fav-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #2f2f2f;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fav-ingredients {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+  margin-top: 4rpx;
+}
+
+.ingredient-label {
+  color: #8c8c8c;
+  font-size: 24rpx;
+  font-weight: 500;
+}
+
+.ingredient-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8rpx;
+}
+
+.ingredient-item {
+  color: #6a4a2f;
+  font-size: 24rpx;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+
+.fav-remove {
+  padding: 10rpx 18rpx;
+  border-radius: 999rpx;
+  font-size: 24rpx;
+  color: #d07a3a;
+  border: 2rpx solid rgba(208, 122, 58, 0.45);
+}
+
+.fav-remove:active {
+  transform: scale(0.97);
+}
+
+/* 筛选弹窗 */
+.filter-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
+
+.filter-mask {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.filter-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-height: 80vh;
+  background: #fff;
+  border-top-left-radius: 28rpx;
+  border-top-right-radius: 28rpx;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 -10rpx 30rpx rgba(0, 0, 0, 0.15);
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 32rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+  min-height: 80rpx;
+}
+
+.filter-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #2f2f2f;
+  flex: 1;
+}
+
+.filter-header-right {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  flex-shrink: 0;
+}
+
+.delete-icon {
+  width: 44rpx;
+  height: 44rpx;
+  flex-shrink: 0;
+}
+
+.filter-close {
+  width: 48rpx;
+  height: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  color: #8c8c8c;
+  flex-shrink: 0;
+}
+
+.filter-content {
+  flex: 1;
+  min-height: 0;
+  padding: 24rpx 32rpx;
+}
+
+.filter-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.filter-category {
+  border-bottom: 1rpx solid #f5f5f5;
+  padding-bottom: 24rpx;
+}
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16rpx 0;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #2f2f2f;
+}
+
+.category-name {
+  flex: 1;
+}
+
+.category-arrow {
+  color: #8c8c8c;
+  font-size: 24rpx;
+}
+
+.category-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  padding: 12rpx 0;
+}
+
+.filter-ingredient-item {
+  padding: 12rpx 24rpx;
+  background: #f7f7f7;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  color: #6a4a2f;
+  border: 2rpx solid transparent;
+}
+
+/* 未选列表里，如果这个食材已经在 selectedIngredients 中，就用“弱化显示” */
+.filter-ingredient-item[aria-selected="true"] {
+  opacity: 0.55;
+}
+
+/* 已选栏 */
+.selected-bar {
+  margin-bottom: 20rpx;
+  padding: 16rpx;
+  background: #fff5eb;
+  border-radius: 20rpx;
+}
+
+.selected-bar-title {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #d35400;
+  margin-bottom: 12rpx;
+}
+
+.selected-bar-list {
+  white-space: nowrap;
+}
+
+.selected-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 10rpx 18rpx;
+  margin-right: 12rpx;
+  background: #ffffff;
+  border-radius: 999rpx;
+  border: 2rpx solid rgba(211, 84, 0, 0.35);
+  color: #d35400;
+  font-size: 24rpx;
+}
+
+.selected-pill-x {
+  margin-left: 10rpx;
+  color: #ff4444;
+  font-weight: 700;
+}
+
+.filter-footer {
+  display: flex;
+  gap: 16rpx;
+  padding: 24rpx 32rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.filter-clear,
+.filter-confirm {
+  flex: 1;
+  padding: 20rpx;
+  border-radius: 20rpx;
+  font-size: 28rpx;
+  border: none;
+}
+
+.filter-clear {
+  background: #f5f5f5;
+  color: #6a6a6a;
+}
+
+.filter-confirm {
+  background: linear-gradient(135deg, #ffb872, #ff8f4c);
+  color: #fff;
 }
 

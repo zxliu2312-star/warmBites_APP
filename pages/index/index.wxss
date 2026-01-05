@@ -11,37 +11,192 @@ page {
   min-height: 100vh;
 }
 
+.hero-container {
+  position: relative;
+  z-index: 1;
+}
+
 .hero {
-  padding: 48rpx 32rpx 24rpx;
-  background: linear-gradient(135deg, #ffe6cc, #fff5e9);
+  position: relative;
+  overflow: hidden;
   border-bottom-left-radius: 32rpx;
   border-bottom-right-radius: 32rpx;
   box-shadow: 0 20rpx 40rpx rgba(0, 0, 0, 0.06);
-  animation: fade-in 0.35s ease;
+  transition: height 0.3s ease;
+}
+
+/* 展开/收起箭头 */
+.toggle-arrow {
+  position: absolute;
+  top: 48rpx;
+  right: 32rpx;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.toggle-arrow:active {
+  transform: scale(0.9);
+}
+
+.arrow-icon {
+  color: #d0d0d0;
+  font-size: 32rpx;
+  font-weight: 900;
+  line-height: 0.8;
+  transform: scaleX(1.5);
+  display: inline-block;
+}
+
+.hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 48rpx 32rpx 40rpx;
+  transition: padding 0.3s ease;
+}
+
+/* 收起状态下减少内边距 */
+.hero.collapsed .hero-content {
+  padding: 24rpx 32rpx 0;
+  justify-content: center;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8rpx;
 }
 
 .brand .title {
-  font-size: 40rpx;
-  font-weight: 700;
-  color: #d35400;
+  font-size: 48rpx;
+  font-weight: 800;
+  color: #000000;
+  letter-spacing: 2rpx;
+  text-shadow: 0 2rpx 8rpx rgba(255, 255, 255, 0.8);
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  transition: font-size 0.3s ease;
 }
 
-.brand .subtitle {
-  margin-top: 8rpx;
-  color: #8c8c8c;
+.welcome-text {
   font-size: 26rpx;
+  color: #8c8c8c;
+  font-weight: 400;
+  opacity: 1;
+  transition: opacity 0.3s ease, height 0.3s ease;
+  height: auto;
+}
+
+/* 收起状态下隐藏欢迎文字 */
+.hero.collapsed .welcome-text {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  margin: 0;
+}
+
+.collapsed-text {
+  font-size: 24rpx;
+  color: #8c8c8c;
+  font-weight: 400;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  margin: 0;
+  transition: opacity 0.3s ease, height 0.3s ease, margin 0.3s ease;
+}
+
+/* 收起状态下显示提示文字 */
+.hero.collapsed .collapsed-text {
+  opacity: 1;
+  height: auto;
+  margin-top: 8rpx;
+}
+
+/* 收起状态下缩小标题 */
+.hero.collapsed .brand .title {
+  font-size: 45rpx;
+}
+
+.hero-middle {
+  margin-top: 240rpx;
+  margin-bottom: 60rpx;
+  transition: margin-top 0.3s ease, opacity 0.3s ease, margin-bottom 0.3s ease;
+}
+
+/* 收起状态下隐藏中间区域 */
+.hero.collapsed .hero-middle {
+  margin-top: 0;
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.day-counter {
+    font-size: 28rpx;
+    color: #000000;
+    font-weight: 500;
+    letter-spacing: 1rpx;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    transform: translateY(-8px); 
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); 
+}
+
+/* 收起状态下隐藏天数显示 */
+.hero.collapsed .day-counter {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* 搜索栏包装器 */
+.search-wrapper {
+  position: relative;
+  z-index: 2;
+  padding: 0 32rpx;
+  margin-top: -60rpx;
+  transition: margin-top 0.3s ease, padding 0.3s ease;
+}
+
+/* 展开状态：搜索栏在 hero 底部 */
+.search-wrapper.expanded {
+  margin-top: -60rpx;
+  padding-bottom: 24rpx;
+}
+
+/* 收起状态：搜索栏跟随标签栏上移 */
+.search-wrapper.collapsed {
+  margin-top: 0;
+  padding: 16rpx 32rpx 8rpx;
+  background: #f7f2ed;
 }
 
 .search-bar {
-  margin-top: 24rpx;
   display: flex;
   align-items: center;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.95);
   border-radius: 999rpx;
   padding: 16rpx 20rpx;
-  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.04);
-  border: 1px solid #f3e7db;
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.8);
   transition: all 0.2s ease;
+  backdrop-filter: blur(10rpx);
 }
 
 .search-bar .icon {
@@ -61,8 +216,14 @@ page {
 }
 
 .cat-bar {
-  padding: 16rpx 0 0;
+  padding: 0;
   background: #f7f2ed;
+  transition: padding 0.3s ease;
+}
+
+/* 收起状态下，标签栏紧贴搜索栏 */
+.search-wrapper.collapsed ~ .cat-bar {
+  padding-top: 8rpx;
 }
 
 .cat-row {
@@ -150,6 +311,80 @@ page {
   font-size: 24rpx;
 }
 
+.meta-actions {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+/* 右侧：点赞/收藏（图标在左，数字在右） */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6rpx;
+  padding: 6rpx 8rpx;
+  border-radius: 999rpx;
+}
+
+.action:active {
+  transform: scale(0.96);
+}
+
+.action-icon {
+  width: 30rpx;
+  height: 30rpx;
+}
+
+.action-count {
+  font-size: 22rpx;
+  color: #2f2f2f;
+  line-height: 1;
+}
+
+/* 点赞动画：用额外的 anim class 触发，保证每次点击都能重复播放 */
+.action.like.anim {
+  animation: like-pop 260ms ease-out;
+}
+
+@keyframes like-pop {
+  0% {
+    transform: scale(0.85);
+  }
+  55% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.action.collect.active {
+  /* 收藏状态样式 */
+}
+
+/* 收藏动画：用额外的 anim class 触发，保证每次点击都能重复播放 */
+.action.collect.anim {
+  animation: fav-pop 260ms ease-out;
+}
+
+@keyframes fav-pop {
+  0% {
+    transform: scale(0.85);
+  }
+  55% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .tag-row {
   display: flex;
   gap: 10rpx;
@@ -221,23 +456,55 @@ page {
 
 .modal-header {
   display: flex;
+  flex-direction: column;
+  margin-bottom: 12rpx;
+  gap: 10rpx;
+}
+
+.modal-row {
+  display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12rpx;
   gap: 12rpx;
-  position: relative;
-  padding-right: 0rpx;
 }
 
 .modal-title {
+  flex: 1;
+  min-width: 0;
   font-size: 34rpx;
   font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.modal-meta {
+.modal-row-right {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+  flex: 0 0 auto;
+}
+
+.modal-desc {
+  color: #6a6a6a;
+  font-size: 26rpx;
+  line-height: 1.5;
+}
+
+.modal-counts {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  color: #2f2f2f;
   font-size: 24rpx;
-  color: #8c8c8c;
-  margin-top: 4rpx;
+}
+
+.modal-counts .count.like {
+  color: #e74c3c;
+}
+
+.modal-counts .count.fav {
+  color: #f6c343;
 }
 
 .cook-btn {
@@ -247,9 +514,7 @@ page {
   background: linear-gradient(135deg, #ffb872, #ff8f4c);
   color: #fff;
   font-weight: 700;
-  position: absolute;
-  right: 0;
-  top: 0;
+  position: static;
   box-shadow: 0 10rpx 20rpx rgba(255, 143, 76, 0.25);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
