@@ -1,7 +1,7 @@
 const CATEGORIES = [
     "全部",
     "家常菜",
-    "快手菜",
+    "快手餐",
     "烘焙",
     "川菜",
     "粤菜"
@@ -25,7 +25,7 @@ const CATEGORIES = [
     {
       id: "2",
       title: "红烧土豆炖排骨",
-      image: "https://th.bing.com/th/id/R.c6bb4910f2abedad1c29abf1d7b8b2db?rik=lI9LjcI8PB35bQ&riu=http%3a%2f%2fi2.chuimg.com%2f78efc32a192011e7947d0242ac110002_800w_450h.jpg%3fimageView2%2f2%2fw%2f660%2finterlace%2f1%2fq%2f90&ehk=wHIeknD3pLXYihaPU8JPSYf%2fMtMteH8jpoqT3%2fPLlU4%3d&risl=&pid=ImgRaw&r=0",
+      image: "https://tse3.mm.bing.net/th/id/OIP.rpIiygSq5o0qbne0_0C4igHaGx?rs=1&pid=ImgDetMain&o=7&rm=3",
       time: "90分钟",
       likes: 420,
       tags: ["红烧", "家常", "下饭"],
@@ -109,7 +109,7 @@ const CATEGORIES = [
     {
       id: "9",
       title: "葱爆肥牛卷",
-      image: "https://th.bing.com/th/id/R.6cb352aa31dce7bea28b43e15e81614c",
+      image: "https://img95.699pic.com/photo/50248/9525.jpg_wh860.jpg",
       time: "15分钟",
       likes: 600,
       tags: ["快手", "下饭", "肉菜"],
@@ -193,7 +193,7 @@ const CATEGORIES = [
     {
       id: "16",
       title: "葡式蛋挞（懒人版）",
-      image: "https://th.bing.com/th/id/R.6869fba3fff640fc85675cd542b65878",
+      image: "https://th.bing.com/th/id/R.6869fba3fff640fc85675cd542b65878?rik=kEAlp3XakY%2fGXQ&riu=http%3a%2f%2fwww.sxxdf.cn%2fuploads%2fallimg%2f2004%2f1-2004140Z629D2.jpg&ehk=WOFpXEI%2f6IS8QcWjjuak%2fAWssVILNrB4tB2BOW0OGAU%3d&risl=&pid=ImgRaw&r=0",
       time: "30分钟",
       likes: 520,
       tags: ["烘焙", "甜点", "奶香"],
@@ -347,7 +347,7 @@ const CATEGORIES = [
     {
       id: "23",
       title: "回锅肉",
-      image: "https://th.bing.com/th/id/R.b3e4f7f41141b9e9570a215919ebdf96",
+      image: "https://th.bing.com/th/id/R.b3e4f7f41141b9e9570a215919ebdf96?rik=oA6Pa%2fTOHZaRtg&pid=ImgRaw&r=0",
       time: "40分钟",
       likes: 820,
       tags: ["川菜", "经典", "酱香"],
@@ -435,7 +435,7 @@ const CATEGORIES = [
     {
       id: "27",
       title: "干炒牛河",
-      image: "https://th.bing.com/th/id/R.981c92174744185993b3c1c88dceadd1",
+      image: "https://pic2.zhimg.com/v2-d2a772d349e8bfdeab561944ac4ef989_r.jpg",
       time: "20分钟",
       likes: 720,
       tags: ["粤菜", "锅气", "经典"],

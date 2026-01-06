@@ -61,6 +61,15 @@ Page({
     }
   },
 
+  // 下拉刷新
+  onPullDownRefresh() {
+    // 重新获取收藏列表
+    this.fetchFavoritesFromServer(() => {
+      // 刷新完成后停止下拉刷新动画
+      wx.stopPullDownRefresh();
+    });
+  },
+
 
 
   initRecipes() {
@@ -128,7 +137,7 @@ Page({
   },
 
   // ====== 从后端获取当前用户的收藏列表 ======
-  fetchFavoritesFromServer() {
+  fetchFavoritesFromServer(callback) {
     const that = this;
     getFavorites(
       (favoriteIds) => {
@@ -138,8 +147,13 @@ Page({
           if (localIds.length > 0) {
             that.setData(
               { favoriteIds: localIds },
-              () => that.filterRecipes()
+              () => {
+                that.filterRecipes();
+                callback && callback();
+              }
             );
+          } else {
+            callback && callback();
           }
           return;
         }
@@ -148,7 +162,10 @@ Page({
         that.setFavoriteIds(ids);
         that.setData(
           { favoriteIds: ids },
-          () => that.filterRecipes()
+          () => {
+            that.filterRecipes();
+            callback && callback();
+          }
         );
       },
       (err) => {
@@ -158,11 +175,15 @@ Page({
         if (localIds.length > 0) {
           that.setData(
             { favoriteIds: localIds },
-            () => that.filterRecipes()
+            () => {
+              that.filterRecipes();
+              callback && callback();
+            }
           );
         } else {
           // 如果本地也没有，至少确保菜品能正常显示（只是没有收藏状态）
           that.filterRecipes();
+          callback && callback();
         }
       }
     );

@@ -1,5 +1,5 @@
 // API工具文件
-const BASE_URL = 'http://127.0.0.1:8080';
+const BASE_URL = 'http://je79f53c.natappfree.cc';
 
 /**
  * 获取用户ID（从本地存储或全局数据）
