@@ -6,6 +6,7 @@
       <view class="hero-content">
         <view class="brand">
           <view class="title">暖食记</view>
+          <image class="avatar" src="https://c-ssl.dtstatic.com/uploads/blog/202301/11/20230111141039_8dcde.thumb.400_0.jpg" mode="aspectFill" />
           <view class="welcome-text">欢迎回来，大厨 臣巳</view>
           <view class="collapsed-text">来选选今天吃什么吧</view>
         </view>

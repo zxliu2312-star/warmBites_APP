@@ -3,14 +3,14 @@ Page({
     // 目前后端仅实现收藏接口（FavoriteController），暂无用户信息接口
     // 这里先提供可展示的“用户信息”结构；后续有 user/profile 接口时再替换为后端返回
     user: {
-      id: 'demoUser001',
-      name: '暖食记用户',
+      id: 'iloveHMI',
+      name: '臣巳',
       motto: '让做饭更轻松，让家的味道更温暖',
-      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=256&h=256&fit=crop',
+      avatar: 'https://c-ssl.dtstatic.com/uploads/blog/202301/11/20230111141039_8dcde.thumb.400_0.jpg',
       stats: {
-        favorites: 0,
-        likes: 0,
-        cooks: 0
+        favorites: 8,
+        likes: 231,
+        cooks: 341
       }
     },
     sections: [

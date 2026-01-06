@@ -1,9 +1,6 @@
 // index.js
 const { CATEGORIES, RECIPES } = require('../../data/recipes');
-
-// 后端基础地址 & 临时 userId（按需修改为实际服务地址和登录用户）
-const BASE_URL = 'http://localhost:8080'; // TODO: 按实际后端地址修改
-const USER_ID = 'demoUser001';           // TODO: 接入登录后替换为真实 userId
+const { toggleFavorite: apiToggleFavorite, getFavorites } = require('../../utils/api');
 
 Page({
   data: {
@@ -53,6 +50,8 @@ Page({
     this.setData({
       heroHeight: 480
     });
+    // 从服务器获取收藏列表
+    this.fetchFavoritesFromServer();
   },
 
   onUnload() {
@@ -62,64 +61,24 @@ Page({
     }
   },
 
-  // ====== 通用请求封装（简单版） ======
-  request(options) {
-    const { url, method = 'GET', data = {}, success, fail, complete } = options;
-    wx.request({
-      url: BASE_URL + url,
-      method,
-      data,
-      header: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-      },
-      success: (res) => {
-        const body = res.data || {};
-        if (body.success) {
-          success && success(body.data);
-        } else {
-          wx.showToast({
-            title: body.message || '请求失败',
-            icon: 'none'
-          });
-          fail && fail(body);
-        }
-      },
-      fail: (err) => {
-        wx.showToast({
-          title: '网络错误',
-          icon: 'none'
-        });
-        fail && fail(err);
-      },
-      complete
-    });
-  },
 
 
   initRecipes() {
     const all = RECIPES;
-    const { pageSize } = this.data;
-    const slice = all.slice(0, pageSize);
+    // 加载所有菜谱，不再限制数量
+    const recipesWithHeight = this.attachStableCardHeight(all);
 
-    const recipesWithHeight = this.attachStableCardHeight(slice);
-
-    // 默认所有菜都收藏
-    const defaultFavoriteIds = all.map(r => r.id);
-
+    // 初始化时使用空收藏列表，等待从服务器获取
     this.setData(
       {
         recipes: recipesWithHeight,
-        favoriteIds: defaultFavoriteIds,
+        favoriteIds: [],
         likedIds: [],
-        hasMore: all.length > slice.length,
+        hasMore: false, // 已加载全部，无需分页
         errorMsg: ''
       },
       () => {
-        // 保存默认收藏列表
-        this.setFavoriteIds(defaultFavoriteIds);
         this.filterRecipes();
-        // 不再从服务器获取，使用默认收藏
-        // this.fetchFavoritesFromServer();
       }
     );
   },
@@ -171,23 +130,42 @@ Page({
   // ====== 从后端获取当前用户的收藏列表 ======
   fetchFavoritesFromServer() {
     const that = this;
-    this.request({
-      url: '/api/favorite',
-      method: 'GET',
-      data: {
-        userId: USER_ID
-      },
-      success(favoriteIds) {
+    getFavorites(
+      (favoriteIds) => {
         if (!Array.isArray(favoriteIds)) {
+          // 如果返回的不是数组，使用本地存储
+          const localIds = that.getFavoriteIds();
+          if (localIds.length > 0) {
+            that.setData(
+              { favoriteIds: localIds },
+              () => that.filterRecipes()
+            );
+          }
           return;
         }
-        that.setFavoriteIds(favoriteIds);
+        // 确保收藏ID都是字符串格式（后端返回的可能是字符串数组）
+        const ids = favoriteIds.map(id => String(id));
+        that.setFavoriteIds(ids);
         that.setData(
-          { favoriteIds },
+          { favoriteIds: ids },
           () => that.filterRecipes()
         );
+      },
+      (err) => {
+        console.error('获取收藏列表失败:', err);
+        // 失败时使用本地存储的收藏列表作为备用，不影响菜品显示
+        const localIds = that.getFavoriteIds();
+        if (localIds.length > 0) {
+          that.setData(
+            { favoriteIds: localIds },
+            () => that.filterRecipes()
+          );
+        } else {
+          // 如果本地也没有，至少确保菜品能正常显示（只是没有收藏状态）
+          that.filterRecipes();
+        }
       }
-    });
+    );
   },
 
   onSearchInput(e) {
@@ -292,7 +270,7 @@ Page({
     }
   },
 
-  // 收藏/取消收藏（纯前端实现）
+  // 收藏/取消收藏（调用后端API）
   toggleFavorite(e) {
     e?.stopPropagation?.();
 
@@ -301,16 +279,7 @@ Page({
 
     const currentIds = this.data.favoriteIds || [];
     const exists = currentIds.includes(id);
-    let nextIds;
-    let nextIsFav;
-
-    if (exists) {
-      nextIds = currentIds.filter((x) => x !== id);
-      nextIsFav = false;
-    } else {
-      nextIds = [id, ...currentIds];
-      nextIsFav = true;
-    }
+    const nextIsFav = !exists;
 
     // 触发收藏动画
     this.setData({ favAnimId: id });
@@ -318,8 +287,13 @@ Page({
       this.setData({ favAnimId: '' });
     }, 300);
 
-    // 保存到本地存储
-    this.setFavoriteIds(nextIds);
+    // 先更新UI（乐观更新）
+    let nextIds;
+    if (exists) {
+      nextIds = currentIds.filter((x) => x !== id);
+    } else {
+      nextIds = [id, ...currentIds];
+    }
 
     // 更新收藏数量：在原有基础上加一或减一
     const currentRecipe = this.data.recipes.find(r => r.id === id);
@@ -343,6 +317,48 @@ Page({
             : this.data.activeRecipe
       },
       () => this.filterRecipes()
+    );
+
+    // 调用后端API
+    apiToggleFavorite(
+      String(id), // 确保recipeId是字符串
+      (statusText) => {
+        // 成功：显示提示信息
+        wx.showToast({
+          title: statusText || (nextIsFav ? '已收藏' : '已取消收藏'),
+          icon: 'none',
+          duration: 1500
+        });
+        // 保存到本地存储作为缓存
+        this.setFavoriteIds(nextIds);
+      },
+      (err) => {
+        // 失败：回滚UI状态
+        console.error('收藏操作失败:', err);
+        const rollbackIds = exists ? [...nextIds, id] : nextIds.filter((x) => x !== id);
+        this.setData(
+          {
+            favoriteIds: rollbackIds,
+            recipes: (this.data.recipes || []).map((r) =>
+              r.id === id ? { ...r, isFav: exists, favoriteCount: currentCount } : r
+            ),
+            activeRecipe:
+              this.data.activeRecipe && this.data.activeRecipe.id === id
+                ? {
+                    ...this.data.activeRecipe,
+                    isFav: exists,
+                    favoriteCount: currentCount
+                  }
+                : this.data.activeRecipe
+          },
+          () => this.filterRecipes()
+        );
+        wx.showToast({
+          title: '操作失败，请重试',
+          icon: 'none',
+          duration: 2000
+        });
+      }
     );
   },
 

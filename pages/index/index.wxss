@@ -84,13 +84,33 @@ page {
 }
 
 .brand .title {
-  font-size: 48rpx;
+  font-size: 96rpx;
   font-weight: 800;
   color: #000000;
   letter-spacing: 2rpx;
   text-shadow: 0 2rpx 8rpx rgba(255, 255, 255, 0.8);
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   transition: font-size 0.3s ease;
+}
+
+.avatar {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  border: 3rpx solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.15);
+  opacity: 1;
+  transition: opacity 0.3s ease, height 0.3s ease, margin 0.3s ease;
+  margin: 8rpx 0;
+}
+
+/* 收起状态下隐藏头像 */
+.hero.collapsed .avatar {
+  opacity: 0;
+  height: 0;
+  width: 0;
+  overflow: hidden;
+  margin: 0;
 }
 
 .welcome-text {
@@ -130,7 +150,7 @@ page {
 
 /* 收起状态下缩小标题 */
 .hero.collapsed .brand .title {
-  font-size: 45rpx;
+  font-size: 48rpx;
 }
 
 .hero-middle {

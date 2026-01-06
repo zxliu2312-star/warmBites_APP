@@ -1,4 +1,5 @@
 const { RECIPES } = require('../../data/recipes');
+const { getFavorites, toggleFavorite } = require('../../utils/api');
 
 Page({
   data: {
@@ -37,7 +38,7 @@ Page({
 
   loadFavorites() {
     // 默认9个菜谱（包括西红柿炒鸡蛋）
-    const defaultIds = ['h2', 'h1', 'q1', 'q2', 'f1', 'b1', 's2', 'sp1'];
+    const defaultIds = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
     
     let ids = [];
     try {
